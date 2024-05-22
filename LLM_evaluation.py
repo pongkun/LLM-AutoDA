@@ -28,7 +28,7 @@ class Evaluation():
     
     def evaluate(self):
         try:
-            heuristic_module = importlib.import_module("ael_alg")
+            heuristic_module = importlib.import_module("LLM_alg")
             eva = importlib.reload(heuristic_module)   
             
             # ----------------------------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------------------
