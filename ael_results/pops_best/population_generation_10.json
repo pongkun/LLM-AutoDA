@@ -1,0 +1,6 @@
+{
+     "algorithm": "",
+     "code": "import numpy as np\n\ndef get_aug_type(aug_weight, ACCs, History_ACCs, lats_chose_matix, lats_chose_exts, epoch):\n    cls_num, num_aug_type = History_ACCs.shape\n    \n    chose_matrix = np.zeros((cls_num, num_aug_type), dtype=bool)\n    chose_exts = np.zeros((cls_num, num_aug_type))\n    \n    for cidx in range(cls_num):\n        delta_acc = ACCs[cidx] - np.sum(History_ACCs[cidx] * aug_weight[cidx])\n        aug_list = np.argsort(delta_acc)\n        for index in aug_list:\n            if not lats_chose_matix[cidx, index]:\n                chose_matrix[cidx, index] = True\n                chose_exts[cidx, index] = lats_chose_exts[cidx, index]\n                break\n    \n    return chose_matrix,chose_exts",
+     "objective": 5.79789,
+     "other_inf": null
+}
