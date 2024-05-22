@@ -1,8 +1,0 @@
-[
-     {
-          "algorithm": "The algorithm dynamically adjusts augmentation technique selection and intensity based on per-class accuracy improvements, historical usage, and a decay factor to address class imbalance and enhance model performance on underrepresented classes.",
-          "code": "import numpy as np\nimport random\ndef get_aug_type(aug_weight,ACCs, History_ACCs, lats_chose_matix, lats_chose_exts,epoch):\n        cls_num,num_aug_type = History_ACCs.shape\n\n        # solve a weight as self.aug_weight\n        for cidx in range(cls_num):\n            indices = lats_chose_matix[cidx]\n            assert indices.any() ,f'class index {cidx} has no chose_aug (num of aug must > 0)'\n            \n            aug_weight[cidx][indices] =             np.where(ACCs[cidx] > History_ACCs[cidx][indices],\n                            aug_weight[cidx][indices] + 1,\n                            aug_weight[cidx][indices] - 1)\n                \n            aug_weight = np.maximum(aug_weight, 1)\n\n        chose_aug = np.zeros((cls_num ,num_aug_type)).astype(bool)\n        chose_exts = np.random.rand(*lats_chose_exts.shape)\n        aug_list = [i for i in range(num_aug_type)]\n        for i in range(cls_num):\n            indexes = random.choices(aug_list , weights = aug_weight[i , : ].tolist() , k = 1) #self.args.MAX_N\n            for index in indexes:\n                chose_aug[i][index] = True\n        \n        return chose_aug,chose_exts",
-          "objective": 0.2,
-          "other_inf": null
-     }
-]
