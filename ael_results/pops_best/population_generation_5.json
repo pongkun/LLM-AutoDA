@@ -1,6 +1,0 @@
-{
-     "algorithm": "",
-     "code": "import numpy as np\nimport random\n\ndef get_aug_type(aug_weight, ACCs, History_ACCs, lats_chose_matix, lats_chose_exts, epoch):\n    cls_num, num_aug_type = History_ACCs.shape\n    \n    for cidx in range(cls_num):\n        indices = lats_chose_matix[cidx]\n        assert indices.any(), f'class index {cidx} has no chosen augmentation technique (number of techniques must be greater than 0)'\n\n        aug_weight[cidx][indices] = np.where(ACCs[cidx] > History_ACCs[cidx][indices],\n                                             aug_weight[cidx][indices] + 1,\n                                             aug_weight[cidx][indices] - 1)\n                \n        aug_weight = np.maximum(aug_weight, 1)\n\n    chosen_indices = np.random.choice(num_aug_type, cls_num)\n    chose_matrix = np.zeros((cls_num, num_aug_type), dtype=bool)\n    chose_matrix[np.arange(cls_num), chosen_indices] = True\n    chose_exts = np.random.rand(cls_num, num_aug_type)\n\n    return chose_matrix,chose_exts",
-     "objective": 3.19386,
-     "other_inf": null
-}

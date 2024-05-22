@@ -1,6 +1,0 @@
-{
-     "algorithm": "",
-     "code": "import numpy as np\n\ndef get_aug_type(aug_weight, ACCs, History_ACCs, lats_chose_matix, lats_chose_exts, epoch):\n    cls_num, num_aug_type = History_ACCs.shape\n    \n    importance = ACCs - History_ACCs.mean(axis=1) * epoch + np.sum(aug_weight, axis=1)\n    chosen_indices = np.argsort(importance)[::-1]\n    \n    chose_matrix = np.zeros((cls_num, num_aug_type), dtype=bool)\n    chose_exts = np.random.rand(*lats_chose_exts.shape)\n    \n    for idx in chosen_indices:\n        for i in range(num_aug_type):\n            if lats_chose_matix[idx, i] and aug_weight[idx, i] > np.percentile(aug_weight[:, i], 50):\n                chose_matrix[idx, i] = True\n                chose_exts[idx, i] = lats_chose_exts[idx, i]\n                break\n    \n    return chose_matrix,chose_exts",
-     "objective": 9.98851,
-     "other_inf": null
-}
